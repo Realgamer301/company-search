@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
-
 const db = require('../db');
 const verifyToken = require('../middleware/authMiddleware');
 
@@ -17,21 +14,6 @@ function addLog(userId, actionType, targetId, description) {
     `;
     db.query(sql, [userId, actionType, targetId, description]);
 }
-
-// =====================
-// MULTER CONFIGURATION
-// =====================
-
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, 'client/uploads');
-    },
-    filename: function(req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
-
-const upload = multer({ storage: storage });
 
 
 // =====================
@@ -66,12 +48,26 @@ router.post('/add', verifyToken, (req, res) => {
     `;
 
     db.query(sql, [title, description || '', url, type || 'General', thumbnail, tags || '', req.user.id], (err, result) => {
-        if (err) {
-            return res.status(500).json({message:'Database error',error:err.message});
-        }
-        addLog(req.user.id, 'ADD_LINK', result.insertId, `Added link: ${title}`);
-        res.json({ message: 'Link Added Successfully' });
+
+    if (err) {
+
+        console.error("========== ADD LINK ERROR ==========");
+        console.error(err);
+        console.error("===================================");
+
+        return res.status(500).json({
+            message: 'Database error',
+            error: err.message
+        });
+    }
+
+    addLog(req.user.id, 'ADD_LINK', result.insertId, `Added link: ${title}`);
+
+    res.json({
+        message: 'Link Added Successfully'
     });
+
+});
 });
 
 
