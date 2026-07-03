@@ -49,6 +49,8 @@ async function(e){
 
         });
 
+        console.log('Login request:', '/api/login', response.status);
+
         if(response.status === 404){
             response = await fetch(
 
@@ -70,6 +72,8 @@ async function(e){
                 })
 
             });
+
+            console.log('Login fallback request:', '/api/auth/login', response.status);
         }
 
         const contentType =
