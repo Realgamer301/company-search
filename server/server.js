@@ -5,20 +5,24 @@ const cors = require('cors');
 const path = require('path');
 const app = express();
 
+function normalizeOrigin(origin){
+    return origin ? origin.replace(/\/+$/, '') : '';
+}
+
 const allowedOrigins = [
-    'https://company-search-production-74f6.up.railway.app',
-    'https://company-search-beryl.vercel.app',
     'http://localhost:3000',
-    'https://studyisfunny.online',
+    process.env.APP_URL,
     ...(process.env.ALLOWED_ORIGINS || '')
         .split(',')
         .map(origin => origin.trim())
         .filter(Boolean)
-];
+]
+    .map(normalizeOrigin)
+    .filter(Boolean);
 
 app.use(cors({
     origin(origin, callback){
-        if(!origin || allowedOrigins.includes(origin)){
+        if(!origin || allowedOrigins.includes(normalizeOrigin(origin))){
             return callback(null,true);
         }
 

@@ -97,7 +97,7 @@ Access to XMLHttpRequest blocked by CORS policy
 **Solution:**
 - Check if frontend URL matches `origin` in `server.js`
 - For local development: `http://localhost:3000`
-- For production: `https://company-search-production-74f6.up.railway.app`
+- For production: use `APP_URL` from your environment variables
 - Update `.env` if needed
 
 ---
