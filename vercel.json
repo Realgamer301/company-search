@@ -2,6 +2,10 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/api/auth/login",
+      "destination": "/api/login"
+    },
+    {
       "source": "/",
       "destination": "/client/index.html"
     },

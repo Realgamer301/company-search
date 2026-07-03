@@ -30,7 +30,7 @@ async function(e){
     try{
         let response = await fetch(
 
-        '/api/auth/login',
+        '/api/login',
 
         {
 
@@ -52,7 +52,7 @@ async function(e){
         if(response.status === 404){
             response = await fetch(
 
-            '/api/login',
+            '/api/auth/login',
 
             {
 
