@@ -22,14 +22,17 @@ const allowedOrigins = [
 
 app.use(cors({
     origin(origin, callback){
-        if(!origin || allowedOrigins.includes(normalizeOrigin(origin))){
+
+        if(
+            !origin ||
+            origin.includes("vercel.app") ||
+            origin === "http://localhost:3000"
+        ){
             return callback(null,true);
         }
 
-        return callback(new Error('Not allowed by CORS'));
-    },
-    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-    allowedHeaders: ['Content-Type','Authorization']
+        callback(new Error("Not allowed by CORS"));
+    }
 }));
 app.use(express.json());
 
