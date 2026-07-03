@@ -28,7 +28,7 @@ async function(e){
     }
 
     try{
-        const response = await fetch(
+        let response = await fetch(
 
         '/api/auth/login',
 
@@ -48,6 +48,29 @@ async function(e){
             })
 
         });
+
+        if(response.status === 404){
+            response = await fetch(
+
+            '/api/login',
+
+            {
+
+                method:'POST',
+
+                headers:{
+                    'Content-Type':'application/json'
+                },
+
+                body:JSON.stringify({
+
+                    username,
+                    password
+
+                })
+
+            });
+        }
 
         const contentType =
         response.headers.get('content-type') || '';
